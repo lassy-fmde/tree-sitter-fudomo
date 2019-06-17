@@ -1,0 +1,26 @@
+{
+  "name": "tree-sitter-fudomo",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install": "node-pre-gyp install --fallback-to-build"
+  },
+  "author": "FMDE Group at University of Luxembourg",
+  "license": "MIT",
+  "binary": {
+    "module_name": "tree-sitter-fudomo",
+    "module_path": "./build/Release/obj.target/",
+    "host": "https://github.com/fudomo/tree-sitter-fudomo/releases/download/",
+    "remote_path": "{version}"
+  },
+  "devDependencies": {
+    "node-pre-gyp-github": "^1.4.3",
+    "tree-sitter-cli": "^0.14.5"
+  },
+  "dependencies": {
+    "nan": "^2.12.1",
+    "node-pre-gyp": "^0.13.0",
+    "tree-sitter": "^0.13.23"
+  }
+}
