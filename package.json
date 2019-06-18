@@ -15,16 +15,20 @@
     "remote_path": "{version}"
   },
   "devDependencies": {
-    "node-pre-gyp-github": "^1.4.3",
-    "tree-sitter-cli": "^0.14.5"
+    "node-pre-gyp-github": "^1.4.3"
   },
   "dependencies": {
     "nan": "^2.12.1",
     "node-pre-gyp": "^0.13.0",
-    "tree-sitter": "^0.13.23"
+    "tree-sitter": "^0.13.23",
+    "tree-sitter-cli": "^0.14.5"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/lassy-fmde/tree-sitter-fudomo.git"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/lassy-fmde/tree-sitter-fudomo/issues"
+  },
+  "homepage": "https://github.com/lassy-fmde/tree-sitter-fudomo"
 }
