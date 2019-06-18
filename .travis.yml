@@ -1,0 +1,49 @@
+language: node_js
+os:
+  - linux
+  - osx
+
+env:
+  global:
+   - secure: "qIftvtueLJP+gPn9EByh26DzQIIF54zIrHxMS2a+tCcXqwfTQ2hLmRdUH3F6BAVAtwtEcHWQhgNx3yE7ErxC172dLIfiIX6Um8oSeVbHCVd1qojvydY8RHLVJI0IBar+K69a1DTVQyG/P4vDiWiGv/psfOoUT6SpsxM38cglZ8HCkt8z5/d4IluOY4yQoZ5BlrifP/p1YWGc0fyD2VV75ltddrS4LFXA3XhficXUdcm+zuZPW2Mzhp8ZIpwMjrtI/xkNTPMHDguGp5gZ3k0/fg7FW6njI6rrVvq0hz6SCz/zYXZj8wzrxYjOz3PVKk1M7/ZEZ6ewWJNZkNkhI0rwNk8dsdq2sv8zj9wMyWK81icd0CVYCY9I/AS+Qkeq83fw7xA+dq6maigDyqr8d+nl+ESDGonc5ogPQjXeT1wlZXrmT3/QwtR7AtFidm6u0POpU/xuIQiZu93Jp9lBh64+gfecDF0zxNzmnhwRzCCMjo/sqo1qvxHuEzuwmBLTnk1f9xvR0DuMQn21MG0Q/Nl5KAlE0hIAB7EbrYCqdqiqd0dYeTNPfEmHrCdcX6cMGajb98rgSha4w7fhYf64eQBB4wEgvBQWuQfrvKeyK90al787T4FqU7hA2E5AV/y4cHJJdDk+OFT2ICiJgenMI9eyZzG3/z5ShhUOPkhVOo46eBM="
+
+before_install:
+# get commit message
+- COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
+# put local node-pre-gyp on PATH
+- export PATH=./node_modules/.bin/:$PATH
+# put global node-gyp on PATH
+- npm install node-gyp -g
+# figure out if we should publish
+- PUBLISH_BINARY=false
+# if we are building a tag then publish
+- if [[ $TRAVIS_BRANCH == `git describe --tags --always HEAD` ]]; then PUBLISH_BINARY=true; fi;
+# or if we put [publish binary] in the commit message
+- if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then PUBLISH_BINARY=true; fi;
+
+install:
+# ensure source install works
+- npm install --build-from-source
+- node-pre-gyp package
+# test our module
+# - node index.js
+
+before_script:
+# if publishing, do it
+- if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish; fi;
+# cleanup
+- node-pre-gyp clean
+- node-gyp clean
+
+script:
+# if publishing, test installing from remote
+- INSTALL_RESULT=0
+- if [[ $PUBLISH_BINARY == true ]]; then INSTALL_RESULT=$(npm install --fallback-to-build=false > /dev/null)$? || true; fi;
+# if install returned non zero (errored) then we first unpublish and then call false so travis will bail at this line
+- if [[ $INSTALL_RESULT != 0 ]]; then echo "returned $INSTALL_RESULT";node-pre-gyp unpublish;false; fi
+# If success then we arrive here so lets clean up
+- node-pre-gyp clean
+
+after_success:
+# if success then query and display all published binaries
+- node-pre-gyp info
