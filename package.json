@@ -22,5 +22,9 @@
     "nan": "^2.12.1",
     "node-pre-gyp": "^0.13.0",
     "tree-sitter": "^0.13.23"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lassy-fmde/tree-sitter-fudomo.git"
   }
 }
