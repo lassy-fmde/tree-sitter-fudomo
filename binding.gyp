@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "tree-sitter-fudomo",
+      "target_name": "tree_sitter_fudomo_binding",
       "include_dirs": [
         "<!(node -e \"require('nan')\")",
         "src"

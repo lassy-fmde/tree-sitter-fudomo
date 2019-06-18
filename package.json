@@ -4,14 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install": "node-pre-gyp install --fallback-to-build"
+    "install": "tree-sitter generate && node-pre-gyp install --fallback-to-build"
   },
   "author": "FMDE Group at University of Luxembourg",
   "license": "MIT",
   "binary": {
-    "module_name": "tree-sitter-fudomo",
-    "module_path": "./build/Release/obj.target/",
-    "host": "https://github.com/fudomo/tree-sitter-fudomo/releases/download/",
+    "module_name": "tree_sitter_fudomo_binding",
+    "module_path": "./build/Release/obj.target",
     "host": "https://github.com/lassy-fmde/tree-sitter-fudomo/releases/download/",
     "remote_path": "{version}"
   },
