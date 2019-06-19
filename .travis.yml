@@ -29,6 +29,9 @@ before_install:
 - if test "${COMMIT_MESSAGE#*'[publish binary]'}" != "$COMMIT_MESSAGE"; then PUBLISH_BINARY=true; fi;
 
 install:
+# install dependencies only (implemented in package.json install script)
+- export NPM_INSTALL_NOP=1
+- npm install
 # ensure source install works
 - node-pre-gyp configure --target=$NODE_VERSION
 - tree-sitter generate
