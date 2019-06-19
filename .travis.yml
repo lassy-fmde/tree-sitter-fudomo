@@ -1,5 +1,5 @@
 language: node_js
-node_js: 10
+node_js: 8
 os:
   - linux
   - osx
@@ -12,12 +12,14 @@ env:
 before_install:
 # Electron version currently expected by Atom
 - export ELECTRON_VERSION=2.0.0
+- export NODE_VERSION=8.9.3
 # get commit message
 - COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
 # put local node-pre-gyp on PATH
 - export PATH=./node_modules/.bin/:$PATH
 # put global node-gyp on PATH
 - npm install node-gyp -g
+- npm install tree-sitter-cli -g
 # figure out if we should publish
 - PUBLISH_BINARY=false
 # if we are building a tag then publish
@@ -27,12 +29,17 @@ before_install:
 
 install:
 # ensure source install works
-- npm install --build-from-source
+- node-pre-gyp configure --target=$NODE_VERSION
+- tree-sitter generate
+- node-pre-gyp build --build-from-source
 - node-pre-gyp package
 - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
 - node-gyp clean
+
 # also build electron version (https://stackoverflow.com/a/49255057)
-- npm install --build-from-source --runtime=electron --target=$ELECTRON_VERSION
+- node-pre-gyp configure --target=$NODE_VERSION
+- tree-sitter generate
+- node-pre-gyp build --build-from-source --runtime=electron --target=$ELECTRON_VERSION
 - node-pre-gyp package --runtime=electron --target=$ELECTRON_VERSION
 - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
 - node-gyp clean
