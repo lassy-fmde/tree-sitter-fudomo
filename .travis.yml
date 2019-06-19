@@ -31,7 +31,7 @@ install:
 
 before_script:
 # if publishing, do it
-- if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish; fi;
+- if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
 # cleanup
 - node-pre-gyp clean
 - node-gyp clean
@@ -41,10 +41,10 @@ script:
 - INSTALL_RESULT=0
 - if [[ $PUBLISH_BINARY == true ]]; then INSTALL_RESULT=$(npm install --fallback-to-build=false > /dev/null)$? || true; fi;
 # if install returned non zero (errored) then we first unpublish and then call false so travis will bail at this line
-- if [[ $INSTALL_RESULT != 0 ]]; then echo "returned $INSTALL_RESULT";node-pre-gyp unpublish;false; fi
+- if [[ $INSTALL_RESULT != 0 ]]; then echo "returned $INSTALL_RESULT";false; fi
 # If success then we arrive here so lets clean up
 - node-pre-gyp clean
 
-after_success:
-# if success then query and display all published binaries
-- node-pre-gyp info
+# after_success:
+# # if success then query and display all published binaries
+# - node-pre-gyp info # requires aws-sdk
