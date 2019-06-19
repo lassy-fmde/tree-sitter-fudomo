@@ -10,6 +10,7 @@ env:
    - secure: "qIftvtueLJP+gPn9EByh26DzQIIF54zIrHxMS2a+tCcXqwfTQ2hLmRdUH3F6BAVAtwtEcHWQhgNx3yE7ErxC172dLIfiIX6Um8oSeVbHCVd1qojvydY8RHLVJI0IBar+K69a1DTVQyG/P4vDiWiGv/psfOoUT6SpsxM38cglZ8HCkt8z5/d4IluOY4yQoZ5BlrifP/p1YWGc0fyD2VV75ltddrS4LFXA3XhficXUdcm+zuZPW2Mzhp8ZIpwMjrtI/xkNTPMHDguGp5gZ3k0/fg7FW6njI6rrVvq0hz6SCz/zYXZj8wzrxYjOz3PVKk1M7/ZEZ6ewWJNZkNkhI0rwNk8dsdq2sv8zj9wMyWK81icd0CVYCY9I/AS+Qkeq83fw7xA+dq6maigDyqr8d+nl+ESDGonc5ogPQjXeT1wlZXrmT3/QwtR7AtFidm6u0POpU/xuIQiZu93Jp9lBh64+gfecDF0zxNzmnhwRzCCMjo/sqo1qvxHuEzuwmBLTnk1f9xvR0DuMQn21MG0Q/Nl5KAlE0hIAB7EbrYCqdqiqd0dYeTNPfEmHrCdcX6cMGajb98rgSha4w7fhYf64eQBB4wEgvBQWuQfrvKeyK90al787T4FqU7hA2E5AV/y4cHJJdDk+OFT2ICiJgenMI9eyZzG3/z5ShhUOPkhVOo46eBM="
 
 before_install:
+- export ELECTRON_VERSION=3.3.1
 # get commit message
 - COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
 # put local node-pre-gyp on PATH
@@ -27,11 +28,13 @@ install:
 # ensure source install works
 - npm install --build-from-source
 - node-pre-gyp package
+- npm install --build-from-source --runtime=electron --target=$ELECTRON_VERSION --dist-url=https://atom.io/download/atom-shell
+- node-pre-gyp package --runtime=electron --target=$ELECTRON_VERSION
 # test our module
 # - node index.js
 
 before_script:
-# if publishing, do it
+# if publishing, do it (publishes both versions)
 - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
 # cleanup
 - node-pre-gyp clean
