@@ -29,16 +29,15 @@ install:
 # ensure source install works
 - npm install --build-from-source
 - node-pre-gyp package
+- if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
+- node-gyp clean
 # also build electron version (https://stackoverflow.com/a/49255057)
-#- npm install --build-from-source --runtime=electron --target=$ELECTRON_VERSION --dist-url=https://atom.io/download/atom-shell
 - npm install --build-from-source --runtime=electron --target=$ELECTRON_VERSION
 - node-pre-gyp package --runtime=electron --target=$ELECTRON_VERSION
-# test our module
-# - node index.js
+- if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
+- node-gyp clean
 
 before_script:
-# if publishing, do it (publishes both versions)
-- if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
 # cleanup
 - node-pre-gyp clean
 - node-gyp clean
