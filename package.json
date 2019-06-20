@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install": "if test \"x$SKIP_COMPILE_ON_INSTALL\" = \"x\"; then echo Compiling && tree-sitter generate && node-pre-gyp install --fallback-to-build; fi"
+    "install": "node scripts/install.js"
   },
   "author": "FMDE Group at University of Luxembourg",
   "license": "MIT",
