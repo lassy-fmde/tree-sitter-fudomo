@@ -30,7 +30,7 @@ before_install:
 
 install:
 # install dependencies only (implemented in package.json install script)
-- export NPM_INSTALL_NOP=1
+- export SKIP_COMPILE_ON_INSTALL=1
 - npm install
 # ensure source install works
 - node-pre-gyp configure --target=$NODE_VERSION
