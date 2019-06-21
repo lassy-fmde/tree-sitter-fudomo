@@ -11,7 +11,9 @@ env:
 
 before_install:
 # Electron version currently expected by Atom
-- export ELECTRON_VERSION=2.0.0
+- export ELECTRON_VERSION=2.0.18
+- export ELECTRON_ABI=57
+- export ELECTRON_DIST_URL=https://atom.io/download/atom-shell
 - export NODE_VERSION=8.9.3
 # get commit message
 - COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
@@ -43,8 +45,8 @@ install:
 # also build electron version (https://stackoverflow.com/a/49255057)
 - node-pre-gyp configure --target=$NODE_VERSION
 - tree-sitter generate
-- node-pre-gyp build --build-from-source --runtime=electron --target=$ELECTRON_VERSION
-- node-pre-gyp package --runtime=electron --target=$ELECTRON_VERSION
+- node-pre-gyp build --build-from-source --runtime=electron --target=$ELECTRON_VERSION --abi=$ELECTRON_ABI --disturl=$ELECTRON_DIST_URL
+- node-pre-gyp package --runtime=electron --target=$ELECTRON_VERSION --abi=$ELECTRON_ABI --disturl=$ELECTRON_DIST_URL
 - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
 - node-gyp clean
 
