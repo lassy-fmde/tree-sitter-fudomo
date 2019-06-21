@@ -45,8 +45,8 @@ install:
 # also build electron version (https://stackoverflow.com/a/49255057)
 - node-pre-gyp configure --target=$NODE_VERSION
 - tree-sitter generate
-- node-pre-gyp build --build-from-source --runtime=electron --target=$ELECTRON_VERSION --abi=$ELECTRON_ABI --disturl=$ELECTRON_DIST_URL
-- node-pre-gyp package                   --runtime=electron --target=$ELECTRON_VERSION --abi=$ELECTRON_ABI --disturl=$ELECTRON_DIST_URL
+- node-pre-gyp build --build-from-source --runtime=electron --target=$ELECTRON_VERSION --abi=$ELECTRON_ABI --dist-url=$ELECTRON_DIST_URL
+- node-pre-gyp package                   --runtime=electron --target=$ELECTRON_VERSION --abi=$ELECTRON_ABI --dist-url=$ELECTRON_DIST_URL
 - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
 - node-gyp clean
 
