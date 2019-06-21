@@ -43,7 +43,7 @@ install:
 - node-gyp clean
 
 # also build electron version (https://stackoverflow.com/a/49255057)
-- node-pre-gyp configure --target=$NODE_VERSION
+- node-pre-gyp configure --runtime=electron --target=$ELECTRON_VERSION --dist-url=$ELECTRON_DIST_URL
 - tree-sitter generate
 - node-pre-gyp build --build-from-source --runtime=electron --target=$ELECTRON_VERSION --abi=$ELECTRON_ABI --dist-url=$ELECTRON_DIST_URL
 - node-pre-gyp package                   --runtime=electron --target=$ELECTRON_VERSION --abi=$ELECTRON_ABI --dist-url=$ELECTRON_DIST_URL
