@@ -12,7 +12,6 @@ env:
 before_install:
 # Electron version currently expected by Atom
 - export ELECTRON_VERSION=2.0.18
-- export ELECTRON_ABI=57
 - export ELECTRON_DIST_URL=https://atom.io/download/atom-shell
 - export NODE_VERSION=8.9.3
 # get commit message
@@ -39,21 +38,24 @@ install:
 - tree-sitter generate
 - node-pre-gyp build --build-from-source
 - node-pre-gyp package
+- node-pre-gyp reveal
+- node-pre-gyp testpackage
 - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
-- node-gyp clean
+- node-pre-gyp clean
 
 # also build electron version (https://stackoverflow.com/a/49255057)
 - node-pre-gyp configure --runtime=electron --target=$ELECTRON_VERSION --dist-url=$ELECTRON_DIST_URL
 - tree-sitter generate
-- node-pre-gyp build --build-from-source --runtime=electron --target=$ELECTRON_VERSION --abi=$ELECTRON_ABI --dist-url=$ELECTRON_DIST_URL
-- node-pre-gyp package                   --runtime=electron --target=$ELECTRON_VERSION --abi=$ELECTRON_ABI --dist-url=$ELECTRON_DIST_URL
+- node-pre-gyp build --build-from-source --runtime=electron --target=$ELECTRON_VERSION --dist-url=$ELECTRON_DIST_URL
+- node-pre-gyp package                   --runtime=electron --target=$ELECTRON_VERSION --dist-url=$ELECTRON_DIST_URL
+- node-pre-gyp reveal
+- node-pre-gyp testpackage
 - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
-- node-gyp clean
+- node-pre-gyp clean
 
 before_script:
 # cleanup
 - node-pre-gyp clean
-- node-gyp clean
 
 script:
 # if publishing, test installing from remote
