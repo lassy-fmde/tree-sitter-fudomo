@@ -1,5 +1,5 @@
 language: node_js
-node_js: 8
+node_js: 8.9.3
 os:
   - linux
   - osx
@@ -36,10 +36,10 @@ install:
 # ensure source install works
 - node-pre-gyp configure --target=$NODE_VERSION
 - tree-sitter generate
-- node-pre-gyp build --build-from-source
-- node-pre-gyp package
-- node-pre-gyp reveal
-- node-pre-gyp testpackage
+- node-pre-gyp build --build-from-source --target=$NODE_VERSION
+- node-pre-gyp package --target=$NODE_VERSION
+- node-pre-gyp reveal --target=$NODE_VERSION
+- node-pre-gyp testpackage --target=$NODE_VERSION
 - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
 - node-pre-gyp clean
 
@@ -48,8 +48,8 @@ install:
 - tree-sitter generate
 - node-pre-gyp build --build-from-source --runtime=electron --target=$ELECTRON_VERSION --dist-url=$ELECTRON_DIST_URL
 - node-pre-gyp package                   --runtime=electron --target=$ELECTRON_VERSION --dist-url=$ELECTRON_DIST_URL
-- node-pre-gyp reveal
-- node-pre-gyp testpackage
+- node-pre-gyp reveal                    --runtime=electron --target=$ELECTRON_VERSION --dist-url=$ELECTRON_DIST_URL
+- node-pre-gyp testpackage               --runtime=electron --target=$ELECTRON_VERSION --dist-url=$ELECTRON_DIST_URL
 - if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
 - node-pre-gyp clean
 
