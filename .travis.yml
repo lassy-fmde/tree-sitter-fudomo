@@ -9,8 +9,8 @@ env:
   global:
    - secure: "qIftvtueLJP+gPn9EByh26DzQIIF54zIrHxMS2a+tCcXqwfTQ2hLmRdUH3F6BAVAtwtEcHWQhgNx3yE7ErxC172dLIfiIX6Um8oSeVbHCVd1qojvydY8RHLVJI0IBar+K69a1DTVQyG/P4vDiWiGv/psfOoUT6SpsxM38cglZ8HCkt8z5/d4IluOY4yQoZ5BlrifP/p1YWGc0fyD2VV75ltddrS4LFXA3XhficXUdcm+zuZPW2Mzhp8ZIpwMjrtI/xkNTPMHDguGp5gZ3k0/fg7FW6njI6rrVvq0hz6SCz/zYXZj8wzrxYjOz3PVKk1M7/ZEZ6ewWJNZkNkhI0rwNk8dsdq2sv8zj9wMyWK81icd0CVYCY9I/AS+Qkeq83fw7xA+dq6maigDyqr8d+nl+ESDGonc5ogPQjXeT1wlZXrmT3/QwtR7AtFidm6u0POpU/xuIQiZu93Jp9lBh64+gfecDF0zxNzmnhwRzCCMjo/sqo1qvxHuEzuwmBLTnk1f9xvR0DuMQn21MG0Q/Nl5KAlE0hIAB7EbrYCqdqiqd0dYeTNPfEmHrCdcX6cMGajb98rgSha4w7fhYf64eQBB4wEgvBQWuQfrvKeyK90al787T4FqU7hA2E5AV/y4cHJJdDk+OFT2ICiJgenMI9eyZzG3/z5ShhUOPkhVOo46eBM="
   matrix:
-    - NVM_INSTALL_VERSION="8.9.3" TARGET="8.9.3" RUNTIME="node" DISTURL=""
-    - NVM_INSTALL_VERSION="8.9.3" TARGET="2.0.18" RUNTIME="electron" DISTURL="https://atom.io/download/atom-shell"
+    - NVM_INSTALL_VERSION="8.9.3" TARGET="8.9.3" RUNTIME="node" ARCH="x64" DISTURL=""
+    - NVM_INSTALL_VERSION="8.9.3" TARGET="2.0.18" RUNTIME="electron" ARCH="x64" DISTURL="https://atom.io/download/atom-shell"
 
 before_install:
 - |
@@ -29,8 +29,8 @@ before_install:
 - export npm_config_target="$TARGET"
 # The architecture of Electron, see https://electronjs.org/docs/tutorial/support#supported-platforms
 # for supported architectures.
-#- export npm_config_arch=x64
-#- export npm_config_target_arch=x64
+- export npm_config_arch=$ARCH
+- export npm_config_target_arch=$ARCH
 # Download headers for Electron.
 - if test "${DISTURL}x" != "x"; then export npm_config_disturl="$DISTURL"; fi;
 # Tell node-pre-gyp that we are building for Electron.
