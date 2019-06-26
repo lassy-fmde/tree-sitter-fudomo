@@ -13,10 +13,17 @@ env:
     - NVM_INSTALL_VERSION="8.9.3" TARGET="2.0.18" RUNTIME="electron" DISTURL="https://atom.io/download/atom-shell"
 
 before_install:
-- rm -rf ~/.nvm/ && git clone --depth 1 https://github.com/creationix/nvm.git ~/.nvm
-- source ~/.nvm/nvm.sh
-- nvm install $NVM_INSTALL_VERSION
-- nvm use $NVM_INSTALL_VERSION
+- |
+  if test "${TRAVIS_OS_NAME}" != "windows"; then
+    rm -rf ~/.nvm/ && git clone --depth 1 https://github.com/creationix/nvm.git ~/.nvm;
+    source ~/.nvm/nvm.sh;
+    nvm install $NVM_INSTALL_VERSION;
+    nvm use $NVM_INSTALL_VERSION;
+  else
+    choco install nodist;
+    source "C:\Program Files (x86)\Nodist\bin\nodist_bash_profile_content.sh";
+    nodist global "$NVM_INSTALL_VERSION";
+  fi
 
 - export npm_config_target="$TARGET"
 # The architecture of Electron, see https://electronjs.org/docs/tutorial/support#supported-platforms
