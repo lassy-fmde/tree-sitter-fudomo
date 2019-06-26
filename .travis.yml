@@ -20,8 +20,9 @@ before_install:
     nvm install $NVM_INSTALL_VERSION;
     nvm use $NVM_INSTALL_VERSION;
   else
-    choco install nodist;
-    source "C:\Program Files (x86)\Nodist\bin\nodist_bash_profile_content.sh";
+    choco install -y nodist;
+    export PATH="/c/Program Files (x86)/Nodist/bin:$PATH";
+    export NODIST_PREFIX="/c/Program Files (x86)/Nodist";
     nodist global "$NVM_INSTALL_VERSION";
   fi
 
