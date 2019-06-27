@@ -10,12 +10,6 @@
   },
   "author": "FMDE Group at University of Luxembourg",
   "license": "MIT",
-  "binary": {
-    "module_name": "tree_sitter_fudomo_binding",
-    "module_path": "./build/Release/obj.target",
-    "host": "https://github.com/lassy-fmde/tree-sitter-fudomo/releases/download/",
-    "remote_path": "{version}"
-  },
   "devDependencies": {
     "prebuild": "^9.0.0"
   },
