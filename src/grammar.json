@@ -1,0 +1,185 @@
+{
+  "name": "fudomo",
+  "rules": {
+    "source_file": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "decomposition"
+      }
+    },
+    "decomposition": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "typedFunction"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "links"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "links": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "\\n[ \\t]*"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "link"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "link"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "link": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "localLink"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "forwardLink"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "reverseLink"
+        }
+      ]
+    },
+    "localLink": {
+      "type": "SYMBOL",
+      "name": "untypedFunction"
+    },
+    "forwardLink": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "reference"
+        },
+        {
+          "type": "STRING",
+          "value": "->"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "typedFunction"
+        }
+      ]
+    },
+    "reverseLink": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "reference"
+        },
+        {
+          "type": "STRING",
+          "value": "<-"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "typedFunction"
+        }
+      ]
+    },
+    "typedFunction": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "type"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "untypedFunction"
+        }
+      ]
+    },
+    "type": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z][a-zA-Z0-9]*"
+    },
+    "reference": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z][a-zA-Z0-9]*"
+    },
+    "untypedFunction": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z][a-zA-Z0-9]*"
+    }
+  },
+  "extras": [
+    {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "\\/\\/.*\\n"
+      }
+    },
+    {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "#.*\\n"
+      }
+    },
+    {
+      "type": "PATTERN",
+      "value": "\\s"
+    }
+  ],
+  "conflicts": [],
+  "externals": [],
+  "inline": []
+}

@@ -1,4 +1,7 @@
-language: cpp
+language: node_js
+
+node_js:
+- 10
 
 os:
 - linux
@@ -8,39 +11,8 @@ os:
 env:
   global:
    - secure: "qIftvtueLJP+gPn9EByh26DzQIIF54zIrHxMS2a+tCcXqwfTQ2hLmRdUH3F6BAVAtwtEcHWQhgNx3yE7ErxC172dLIfiIX6Um8oSeVbHCVd1qojvydY8RHLVJI0IBar+K69a1DTVQyG/P4vDiWiGv/psfOoUT6SpsxM38cglZ8HCkt8z5/d4IluOY4yQoZ5BlrifP/p1YWGc0fyD2VV75ltddrS4LFXA3XhficXUdcm+zuZPW2Mzhp8ZIpwMjrtI/xkNTPMHDguGp5gZ3k0/fg7FW6njI6rrVvq0hz6SCz/zYXZj8wzrxYjOz3PVKk1M7/ZEZ6ewWJNZkNkhI0rwNk8dsdq2sv8zj9wMyWK81icd0CVYCY9I/AS+Qkeq83fw7xA+dq6maigDyqr8d+nl+ESDGonc5ogPQjXeT1wlZXrmT3/QwtR7AtFidm6u0POpU/xuIQiZu93Jp9lBh64+gfecDF0zxNzmnhwRzCCMjo/sqo1qvxHuEzuwmBLTnk1f9xvR0DuMQn21MG0Q/Nl5KAlE0hIAB7EbrYCqdqiqd0dYeTNPfEmHrCdcX6cMGajb98rgSha4w7fhYf64eQBB4wEgvBQWuQfrvKeyK90al787T4FqU7hA2E5AV/y4cHJJdDk+OFT2ICiJgenMI9eyZzG3/z5ShhUOPkhVOo46eBM="
-  matrix:
-    - NVM_INSTALL_VERSION="8.9.3" TARGET="8.9.3" RUNTIME="node" ARCH="x64" DISTURL=""
-    - NVM_INSTALL_VERSION="8.9.3" TARGET="2.0.18" RUNTIME="electron" ARCH="x64" DISTURL="https://atom.io/download/atom-shell"
 
 before_install:
-- |
-  if test "${TRAVIS_OS_NAME}" != "windows"; then
-    rm -rf ~/.nvm/ && git clone --depth 1 https://github.com/creationix/nvm.git ~/.nvm;
-    source ~/.nvm/nvm.sh;
-    nvm install $NVM_INSTALL_VERSION;
-    nvm use $NVM_INSTALL_VERSION;
-    export ELECTRON_REBUILD_CMD="electron-rebuild";
-  else
-    npm config set msvs_version 2015 -global;
-    choco install -y nodist;
-    export PATH="/c/Program Files (x86)/Nodist/bin:$PATH";
-    export NODIST_PREFIX="/c/Program Files (x86)/Nodist";
-    nodist global "$NVM_INSTALL_VERSION";
-    export ELECTRON_REBUILD_CMD="electron-rebuild.cmd";
-  fi
-
-- export npm_config_target="$TARGET"
-# The architecture of Electron, see https://electronjs.org/docs/tutorial/support#supported-platforms
-# for supported architectures.
-- export npm_config_arch=$ARCH
-- export npm_config_target_arch=$ARCH
-# Download headers for Electron.
-- if test "${DISTURL}x" != "x"; then export npm_config_disturl="$DISTURL"; fi;
-# Tell node-pre-gyp that we are building for Electron.
-- export npm_config_runtime="$RUNTIME"
-# Tell node-pre-gyp to build module from source code.
-- export npm_config_build_from_source=true
-
 # figure out if we should publish
 - COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
 - PUBLISH_BINARY=false
@@ -51,38 +23,18 @@ before_install:
 
 # put local node programs on PATH
 - export PATH=./node_modules/.bin/:$PATH
-# put global node-gyp on PATH
-- npm install node-gyp -g
-- npm install node-pre-gyp -g
-- npm install tree-sitter-cli -g
-- if [[ $RUNTIME == "electron" ]]; then npm install electron-rebuild -g; fi;
-- if [[ $RUNTIME == "electron" ]]; then npm install electron@"$TARGET" -g; fi;
 
 install:
-# install dependencies only (implemented in package.json install script)
-- export SKIP_COMPILE_ON_INSTALL=1
 - npm install
-# ensure source install works
-- node-pre-gyp configure
-- tree-sitter generate
-- node-pre-gyp build
-- if [[ $RUNTIME == "electron" ]]; then $ELECTRON_REBUILD_CMD -f -m . --version "$TARGET" -d "$DISTURL" -a "$ARCH"; fi;
-- node-pre-gyp package
-- node-pre-gyp reveal
-- node-pre-gyp testpackage
-- if [[ $PUBLISH_BINARY == true ]]; then node-pre-gyp-github publish --release; fi;
+- npm run prebuild
+- if [[ $PUBLISH_BINARY == true ]]; then npm run prebuild:upload -u ${NODE_PRE_GYP_GITHUB_TOKEN}; fi
 
 before_script:
-# cleanup
-- node-pre-gyp clean
 - node-gyp clean
 
 script:
 # if publishing, test installing from remote
 - INSTALL_RESULT=0
 - if [[ $PUBLISH_BINARY == true ]]; then INSTALL_RESULT=$(npm install --fallback-to-build=false > /dev/null)$? || true; fi;
-# if install returned non zero (errored) then we first unpublish and then call false so travis will bail at this line
-- if [[ $INSTALL_RESULT != 0 ]]; then echo "returned $INSTALL_RESULT";false; fi
-# If success then we arrive here so lets clean up
-- node-pre-gyp clean
-- node-gyp clean
+# if install returned non zero (errored) then call false so travis will bail at this line.
+- if [[ $INSTALL_RESULT != 0 ]]; then echo "returned $INSTALL_RESULT"; false; fi
