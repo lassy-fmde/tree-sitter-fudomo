@@ -1,5 +1,9 @@
-var binary = require('node-pre-gyp');
-var path = require('path');
-
-var binding_path = binary.find(path.resolve(path.join(__dirname,'./package.json')));
-module.exports = require(binding_path);
+try {
+  module.exports = require("./build/Release/tree_sitter_fudomo_binding");
+} catch (error) {
+  try {
+    module.exports = require("./build/Debug/tree_sitter_fudomo_binding");
+  } catch (_) {
+    throw error
+  }
+}
