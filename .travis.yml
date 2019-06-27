@@ -55,7 +55,7 @@ before_install:
 - npm install node-gyp -g
 - npm install node-pre-gyp -g
 - npm install tree-sitter-cli -g
-- npm install electron-rebuild -g
+- if [[ $RUNTIME == "electron" ]]; then npm install electron-rebuild -g; fi;
 - if [[ $RUNTIME == "electron" ]]; then npm install electron@"$TARGET" -g; fi;
 
 install:
