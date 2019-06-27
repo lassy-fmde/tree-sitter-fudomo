@@ -33,7 +33,7 @@ before_script:
 - node-gyp clean
 
 script:
-# if publishing, test installing from remote
+# if publishing, test installing from remote.
 - INSTALL_RESULT=0
 - if [[ $PUBLISH_BINARY == true ]]; then INSTALL_RESULT=$(npm install --fallback-to-build=false > /dev/null)$? || true; fi;
 # if install returned non zero (errored) then call false so travis will bail at this line.
