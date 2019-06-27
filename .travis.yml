@@ -19,12 +19,14 @@ before_install:
     source ~/.nvm/nvm.sh;
     nvm install $NVM_INSTALL_VERSION;
     nvm use $NVM_INSTALL_VERSION;
+    export ELECTRON_REBUILD_CMD="electron-rebuild";
   else
     npm config set msvs_version 2015 -global;
     choco install -y nodist;
     export PATH="/c/Program Files (x86)/Nodist/bin:$PATH";
     export NODIST_PREFIX="/c/Program Files (x86)/Nodist";
     nodist global "$NVM_INSTALL_VERSION";
+    export ELECTRON_REBUILD_CMD="electron-rebuild.cmd";
   fi
 
 - export npm_config_target="$TARGET"
@@ -53,6 +55,8 @@ before_install:
 - npm install node-gyp -g
 - npm install node-pre-gyp -g
 - npm install tree-sitter-cli -g
+- npm install electron-rebuild -g
+- if [[ $RUNTIME == "electron" ]]; then npm install electron@"$TARGET" -g; fi;
 
 install:
 # install dependencies only (implemented in package.json install script)
@@ -62,6 +66,7 @@ install:
 - node-pre-gyp configure
 - tree-sitter generate
 - node-pre-gyp build
+- if [[ $RUNTIME == "electron" ]]; then $ELECTRON_REBUILD_CMD -f -m . --version "$TARGET" -d "$DISTURL" -a "$ARCH"; fi;
 - node-pre-gyp package
 - node-pre-gyp reveal
 - node-pre-gyp testpackage
