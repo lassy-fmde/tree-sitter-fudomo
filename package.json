@@ -11,13 +11,13 @@
   "author": "FMDE Group at University of Luxembourg",
   "license": "MIT",
   "devDependencies": {
-    "prebuild": "^9.0.0"
+    "prebuild": "^9.0.0",
+    "tree-sitter-cli": "~0.15.5"
   },
   "dependencies": {
     "nan": "^2.12.1",
     "prebuild-install": "^5.3.0",
-    "tree-sitter": "0.13.23",
-    "tree-sitter-cli": "^0.14.5"
+    "tree-sitter": "~0.15.5"
   },
   "repository": {
     "type": "git",

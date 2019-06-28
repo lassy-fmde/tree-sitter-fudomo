@@ -1,0 +1,185 @@
+[
+  {
+    "type": "decomposition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "links",
+          "named": true
+        },
+        {
+          "type": "typedFunction",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "forwardLink",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "typedFunction",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "link",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "forwardLink",
+          "named": true
+        },
+        {
+          "type": "localLink",
+          "named": true
+        },
+        {
+          "type": "reverseLink",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "links",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "link",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "localLink",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "untypedFunction",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "reference",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "reverseLink",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "typedFunction",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source_file",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "decomposition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "typedFunction",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "untypedFunction",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "untypedFunction",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": "\n",
+    "named": false
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": "->",
+    "named": false
+  },
+  {
+    "type": "<-",
+    "named": false
+  },
+  {
+    "type": ".",
+    "named": false
+  }
+]
